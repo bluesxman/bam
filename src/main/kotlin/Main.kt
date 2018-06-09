@@ -21,13 +21,11 @@ fun main(args : Array<String>) {
 }
 
 fun requestConcurrent(url: String, concurrency: Int, iterations: Int) = async {
-    val futureStats = mutableListOf<Deferred<Stats>>()
     val overall = Tracker()
     val start = now()
 
-    for (i in 1..concurrency) {
-        d("Concurrent=$i")
-        futureStats.add(measureRequestSequence(url, iterations, i))
+    val futureStats = List(concurrency) { index ->
+        measureRequestSequence(url, iterations, index)
     }
 
     futureStats.forEach {
