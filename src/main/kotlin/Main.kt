@@ -4,28 +4,33 @@ import kotlinx.coroutines.experimental.Deferred
 import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.runBlocking
 
+const val BAM_ENDPOINT_ENV="BAM_ENDPOINT"
+
 fun main(args : Array<String>) {
+    val endpoint = getEndpoint() ?: return
+
     val stats = runBlocking {
         requestConcurrent(
-            url = "http://d2i1u3uf4t4nuo.cloudfront.net/index.html",
-            concurrency = 100,
+            url = endpoint,
+            concurrency = 10,
             iterations = 1000
         ).await()
     }
+
     d(stats.toString())
 }
 
 fun requestConcurrent(url: String, concurrency: Int, iterations: Int) = async {
-    val jobs = mutableListOf<Deferred<Stats>>()
-    val start = now()
+    val futureStats = mutableListOf<Deferred<Stats>>()
     val overall = Tracker()
+    val start = now()
 
     for (i in 1..concurrency) {
         d("Concurrent=$i")
-        jobs.add(requestSequentially(url, iterations, i))
+        futureStats.add(measureRequestSequence(url, iterations, i))
     }
 
-    jobs.forEach {
+    futureStats.forEach {
         overall.accumulate(it.await())
     }
 
@@ -35,12 +40,12 @@ fun requestConcurrent(url: String, concurrency: Int, iterations: Int) = async {
     overall.stats()
 }
 
-fun requestSequentially(url: String, iterations: Int, id: Int): Deferred<Stats> = async {
+fun measureRequestSequence(url: String, iterations: Int, id: Int): Deferred<Stats> = async {
     val tracker = Tracker()
 
     repeat(iterations, { i ->
-        tracker.start()
         d("request id=$id iteration=$i")
+        tracker.start()
         try {
             request(url)
         } catch (e: Exception) {
@@ -56,3 +61,8 @@ fun requestSequentially(url: String, iterations: Int, id: Int): Deferred<Stats> 
 suspend fun request(url: String) = Fuel.get(url).awaitResponse()
 
 fun d(msg: String) = System.out.println(msg)
+
+fun getEndpoint(): String? = System.getenv(BAM_ENDPOINT_ENV) ?: run {
+    d("Environment variable $BAM_ENDPOINT_ENV not set")
+    null
+}
