@@ -1,0 +1,68 @@
+
+======== s3 =======
+
+c=1 i=1000
+total time = 87837
+Stats(avg=87, min=63, max=985, fails=0)
+
+c=10 i=1000
+total time = 89963
+Stats(avg=84, min=62, max=2639, fails=0)
+
+c=100 i=1000
+total time = 81705
+Stats(avg=75, min=52, max=2694, fails=0)
+
+c=250 i=1000
+total time = 89300
+Stats(avg=82, min=53, max=2392, fails=0)
+
+c=375 i=1000
+total time = 117477
+Stats(avg=108, min=53, max=3500, fails=0)
+
+c=437 i=1000
+total time = 141523
+Stats(avg=129, min=53, max=8488, fails=0)
+
+c=500 i=1000
+total time = 160819
+Stats(avg=144, min=53, max=15111, fails=25)
+
+c=1000 i=1000
+total time = 320969
+Stats(avg=293, min=53, max=31275, fails=218)
+
+======== Cloudfront =======
+
+c=1 i=1000
+total time = 17941
+Stats(avg=17, min=11, max=507, fails=0)
+
+c=10 i=1000
+total time = 18270
+Stats(avg=17, min=11, max=382, fails=0)
+
+c=100 i=1000
+total time = 31976
+Stats(avg=29, min=8, max=572, fails=0)
+
+c=175 i=1000
+total time = 53841
+Stats(avg=50, min=7, max=4765, fails=0)
+
+c=250 i=1000
+total time = 80359
+Stats(avg=74, min=8, max=7184, fails=0)
+
+c=375 i=1000
+total time = 113313
+Stats(avg=100, min=7, max=15015, fails=8)
+
+c=500 i=1000
+total time = 142789
+Stats(avg=129, min=7, max=16517, fails=44)
+
+c=1000 i=1000
+total time = 309717
+Stats(avg=278, min=4, max=30539, fails=11120)
